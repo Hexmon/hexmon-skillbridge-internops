@@ -22,7 +22,7 @@ jobs:
       - name: Run backend tests
         run: |
           cd backend
-          if [ -d tests ]; then pytest; fi
+          if [ -d tests ]; then PYTHONPATH=. python -m pytest; fi
 
   frontend-build:
     runs-on: ubuntu-latest
