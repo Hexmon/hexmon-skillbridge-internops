@@ -13,7 +13,10 @@ const statusOptions: Array<"all" | TaskStatus> = [
   "done",
 ];
 
-const statusTone: Record<TaskStatus, "neutral" | "blue" | "green" | "amber" | "red"> = {
+const statusTone: Record<
+  TaskStatus,
+  "neutral" | "blue" | "green" | "amber" | "red"
+> = {
   todo: "neutral",
   in_progress: "blue",
   review: "amber",
@@ -22,12 +25,21 @@ const statusTone: Record<TaskStatus, "neutral" | "blue" | "green" | "amber" | "r
 
 export function TasksPage() {
   const [statusFilter, setStatusFilter] = useState<"all" | TaskStatus>("all");
+  const [searchTerm, setSearchTerm] = useState("");
+
   const visibleTasks = useMemo(
     () =>
-      tasks.filter(
-        (task) => statusFilter === "all" || task.status === statusFilter,
-      ),
-    [statusFilter],
+      tasks.filter((task) => {
+        const matchesStatus =
+          statusFilter === "all" || task.status === statusFilter;
+
+        const matchesSearch =
+          task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          task.ownerName.toLowerCase().includes(searchTerm.toLowerCase());
+
+        return matchesStatus && matchesSearch;
+      }),
+    [statusFilter, searchTerm],
   );
 
   return (
@@ -38,7 +50,10 @@ export function TasksPage() {
         description="Starter task cards show owner, status, priority, due week, and feature code."
       />
 
-      <section className="segmented-control" aria-label="Task status filter">
+      <section
+        className="segmented-control"
+        aria-label="Task status filter"
+      >
         {statusOptions.map((status) => (
           <button
             data-active={statusFilter === status}
@@ -51,19 +66,60 @@ export function TasksPage() {
         ))}
       </section>
 
+      <section className="toolbar">
+        <input
+          type="text"
+          placeholder="Search tasks or owners..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </section>
+
+      <p>
+        Showing {visibleTasks.length} task
+        {visibleTasks.length !== 1 ? "s" : ""}
+      </p>
+
       <section className="card-grid">
+        {visibleTasks.length === 0 && (
+          <article className="info-card">
+            <h3>No tasks found</h3>
+            <p>Try adjusting the filters or search query.</p>
+          </article>
+        )}
+
         {visibleTasks.map((task) => (
           <article className="info-card" key={task.id}>
             <div className="card-icon-line">
               <ListChecks size={18} aria-hidden="true" />
               <StatusBadge label={task.featureCode} tone="red" />
             </div>
+
             <h3>{task.title}</h3>
+
             <p>{task.ownerName}</p>
+
             <div className="meta-line">
-              <StatusBadge label={task.status.replace("_", " ")} tone={statusTone[task.status]} />
-              <StatusBadge label={task.priority} tone={task.priority === "high" ? "red" : "neutral"} />
-              <StatusBadge label={`Week ${task.dueWeek}`} tone="blue" />
+              <StatusBadge
+                label={task.status.replace("_", " ")}
+                tone={statusTone[task.status]}
+              />
+
+              <StatusBadge
+                label={task.priority}
+                tone={
+                  task.priority === "high"
+                    ? "red"
+                    : task.priority === "medium"
+                    ? "amber"
+                    : "green"
+                }
+              />
+
+              <StatusBadge
+                label={`Week ${task.dueWeek}`}
+                tone="blue"
+              />
             </div>
           </article>
         ))}

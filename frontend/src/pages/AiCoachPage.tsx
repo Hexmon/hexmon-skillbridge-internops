@@ -80,6 +80,39 @@ export function AiCoachPage() {
             value={question}
           />
 
+          <div className="example-prompts">
+            <button
+              type="button"
+              onClick={() =>
+                setQuestion("How should I start building the task board feature?")
+              }
+            >
+              Task Board
+            </button>
+
+            <button
+              type="button"
+              onClick={() =>
+                setQuestion("How do I connect React frontend with FastAPI backend?")
+              }
+            >
+              React + FastAPI
+            </button>
+
+            <button
+              type="button"
+              onClick={() =>
+                setQuestion("How do I write a good pull request?")
+              }
+            >
+              Pull Request
+            </button>
+          </div>
+
+          <p className="helper-text">
+            {question.length}/500 characters
+          </p>
+
           <label htmlFor="role">Role focus</label>
           <select
             id="role"
@@ -114,8 +147,22 @@ export function AiCoachPage() {
           ) : null}
 
           <button className="primary-action" disabled={isLoading} type="submit">
-            <span>{isLoading ? "Asking..." : "Ask coach"}</span>
+            <span>
+              {isLoading ? "Thinking..." : "Ask coach"}
+            </span>
             <Bot size={18} aria-hidden="true" />
+          </button>
+
+          <button
+            type="button"
+            className="secondary-action"
+            onClick={() => {
+              setQuestion("");
+              setRole("");
+              setWeek("");
+            }}
+          >
+            Clear Form
           </button>
         </form>
 

@@ -1,9 +1,21 @@
 import { Send } from "lucide-react";
+import { useMemo, useState } from "react";
 import { PageHeader } from "../components/PageHeader";
 import { StatusBadge } from "../components/StatusBadge";
 import { dailyUpdates, interns } from "../services/mockData";
 
 export function DailyUpdatesPage() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [confidence, setConfidence] = useState(4);
+
+  const visibleUpdates = useMemo(
+    () =>
+      dailyUpdates.filter((update) =>
+        update.internName.toLowerCase().includes(searchTerm.toLowerCase()),
+      ),
+    [searchTerm],
+  );
+
   return (
     <>
       <PageHeader
@@ -31,7 +43,16 @@ export function DailyUpdatesPage() {
           <textarea id="next-action" name="next-action" rows={3} placeholder="Next step..." />
 
           <label htmlFor="confidence">Confidence score</label>
-          <input id="confidence" min="1" max="5" name="confidence" type="number" defaultValue="4" />
+          <input
+            id="confidence"
+            type="range"
+            min="1"
+            max="5"
+            value={confidence}
+            onChange={(e) => setConfidence(Number(e.target.value))}
+          />
+
+          <p>Confidence Level: {confidence}/5</p>
 
           <button className="primary-action" type="button">
             <span>Submit update</span>
@@ -40,13 +61,30 @@ export function DailyUpdatesPage() {
         </form>
 
         <div>
-          <h2>Recent Updates</h2>
+          <div className="toolbar">
+            <h2>Recent Updates</h2>
+          </div>
+
+          <input
+            type="text"
+            placeholder="Search updates..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+
+          <p>
+            Showing {visibleUpdates.length} updates
+          </p>
+
           <div className="stack">
-            {dailyUpdates.map((update) => (
+            {visibleUpdates.map((update) => (
               <article className="info-card" key={update.id}>
                 <StatusBadge label={`${update.date} - ${update.internName}`} tone="blue" />
                 <p>{update.done}</p>
-                <p><strong>Blocker:</strong> {update.blockers}</p>
+                <StatusBadge
+                  label={`Blocker: ${update.blockers}`}
+                  tone="amber"
+                />
                 <p><strong>Next:</strong> {update.nextAction}</p>
               </article>
             ))}

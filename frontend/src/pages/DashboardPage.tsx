@@ -2,11 +2,15 @@ import { CheckCircle2, Clock, GitPullRequest, MessageCircleWarning } from "lucid
 import { PageHeader } from "../components/PageHeader";
 import { StatTile } from "../components/StatTile";
 import { StatusBadge } from "../components/StatusBadge";
-import { dailyUpdates, interns, tasks } from "../services/mockData";
+import { dailyUpdates, interns, tasks, resources } from "../services/mockData";
 
 export function DashboardPage() {
   const activeTasks = tasks.filter((task) => task.status !== "done");
   const blockers = dailyUpdates.filter((update) => update.blockers !== "None");
+  const completedTasks = tasks.filter(
+    (task) => task.status === "done",
+  );
+  const totalResources = resources.length;
 
   return (
     <>
@@ -17,10 +21,30 @@ export function DashboardPage() {
       />
 
       <section className="stat-grid" aria-label="Intern dashboard metrics">
-        <StatTile icon={Clock} label="Open tasks" value={activeTasks.length} tone="blue" />
-        <StatTile icon={CheckCircle2} label="Done tasks" value="1" tone="green" />
-        <StatTile icon={MessageCircleWarning} label="Blockers logged" value={blockers.length} tone="amber" />
-        <StatTile icon={GitPullRequest} label="PR evidence needed" value="Every task" tone="red" />
+        <StatTile
+          icon={Clock}
+          label="Active Tasks"
+          value={activeTasks.length}
+          tone="blue"
+        />
+        <StatTile
+          icon={CheckCircle2}
+          label="Completed Tasks"
+          value={completedTasks.length}
+          tone="green"
+        />
+        <StatTile
+          icon={MessageCircleWarning}
+          label="Blockers"
+          value={blockers.length}
+          tone="amber"
+        />
+        <StatTile
+          icon={GitPullRequest}
+          label="Learning Resources"
+          value={totalResources}
+          tone="red"
+        />
       </section>
 
       <section className="two-column">
@@ -31,7 +55,12 @@ export function DashboardPage() {
               <article className="row-card" key={intern.id}>
                 <div>
                   <h3>{intern.name}</h3>
-                  <p>{intern.primaryRole}</p>
+                  <>
+                    <p>{intern.primaryRole}</p>
+                    <p>
+                      <strong>Availability:</strong> {intern.availability}
+                    </p>
+                  </>
                 </div>
                 <StatusBadge label={intern.currentFocus} tone="blue" />
               </article>
@@ -46,7 +75,15 @@ export function DashboardPage() {
               <article className="info-card" key={update.id}>
                 <StatusBadge label={update.date} tone="neutral" />
                 <h3>{update.internName}</h3>
-                <p>{update.done}</p>
+                <>
+                  <p>{update.done}</p>
+                  {update.blockers !== "None" && (
+                    <StatusBadge
+                      label={`Blocker: ${update.blockers}`}
+                      tone="amber"
+                    />
+                  )}
+                </>
                 <p><strong>Next:</strong> {update.nextAction}</p>
               </article>
             ))}
