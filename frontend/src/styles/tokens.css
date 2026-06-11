@@ -19,3 +19,23 @@
   --radius-control: 6px;
   --sidebar-width: 280px;
 }
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-page: #0f172a;
+  --color-surface: #1e293b;
+  --color-surface-muted: #334155;
+
+  --color-text: #f8fafc;
+  --color-muted: #cbd5e1;
+
+  --color-border: #475569;
+
+  --color-blue-soft: #1e3a8a;
+  --color-green-soft: #14532d;
+  --color-red-soft: #7f1d1d;
+  --color-amber-soft: #78350f;
+
+  --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
