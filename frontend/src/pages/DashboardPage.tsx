@@ -11,6 +11,12 @@ export function DashboardPage() {
     (task) => task.status === "done",
   );
   const totalResources = resources.length;
+  const taskProgress = Math.round(
+    (completedTasks.length / tasks.length) * 100
+  );
+
+  const resourceProgress = 75;
+  const qaProgress = 60;
 
   return (
     <>
@@ -45,6 +51,46 @@ export function DashboardPage() {
           value={totalResources}
           tone="red"
         />
+      </section>
+
+      <section className="info-card">
+        <h2>Project Progress</h2>
+
+        <div className="progress-item">
+          <span>Task Completion</span>
+          <span>{taskProgress}%</span>
+        </div>
+
+        <div className="progress-bar">
+          <div
+            className="progress-fill"
+            style={{ width: `${taskProgress}%` }}
+          />
+        </div>
+
+        <div className="progress-item">
+          <span>Resources Coverage</span>
+          <span>{resourceProgress}%</span>
+        </div>
+
+        <div className="progress-bar">
+          <div
+            className="progress-fill"
+            style={{ width: `${resourceProgress}%` }}
+          />
+        </div>
+
+        <div className="progress-item">
+          <span>QA Readiness</span>
+          <span>{qaProgress}%</span>
+        </div>
+
+        <div className="progress-bar">
+          <div
+            className="progress-fill"
+            style={{ width: `${qaProgress}%` }}
+          />
+        </div>
       </section>
 
       <section className="two-column">
