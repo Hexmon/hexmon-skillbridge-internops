@@ -22,6 +22,12 @@ export function MentorDashboardPage() {
     (doneTasks / tasks.length) * 100
   );
 
+  const qaReadiness = 70;
+
+  const internActivity = Math.round(
+    ((interns.length - openBlockers) / interns.length) * 100
+  );
+
   return (
     <>
       <PageHeader
@@ -97,6 +103,46 @@ export function MentorDashboardPage() {
             />
           </div>
         </article>
+      </section>
+
+      <section className="info-card">
+        <h2>Mentor Progress Overview</h2>
+
+        <div className="progress-item">
+          <span>Overall Completion</span>
+          <span>{completionRate}%</span>
+        </div>
+
+        <div className="progress-bar">
+          <div
+            className="progress-fill mentor-progress"
+            style={{ width: `${completionRate}%` }}
+          />
+        </div>
+
+        <div className="progress-item">
+          <span>QA Readiness</span>
+          <span>{qaReadiness}%</span>
+        </div>
+
+        <div className="progress-bar">
+          <div
+            className="progress-fill mentor-progress"
+            style={{ width: `${qaReadiness}%` }}
+          />
+        </div>
+
+        <div className="progress-item">
+          <span>Intern Activity</span>
+          <span>{internActivity}%</span>
+        </div>
+
+        <div className="progress-bar">
+          <div
+            className="progress-fill mentor-progress"
+            style={{ width: `${internActivity}%` }}
+          />
+        </div>
       </section>
 
       <section>

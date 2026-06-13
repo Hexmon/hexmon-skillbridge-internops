@@ -685,3 +685,11 @@ input[type="range"] {
   border-radius: 999px;
   transition: width 0.4s ease;
 }
+
+.mentor-progress {
+  background: linear-gradient(
+    90deg,
+    var(--color-green),
+    var(--color-blue)
+  );
+}
