@@ -4,7 +4,8 @@ import {
   Sun,
   Bell,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { GlobalSearch } from "./GlobalSearch";
 import type { NavItem, PageId } from "../types";
 
 type AppShellProps = {
@@ -36,8 +37,34 @@ export function AppShell({
     );
   }, [darkMode]);
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(
+          event.target as Node
+        )
+      ) {
+        setShowNotifications(false);
+      }
+    }
+
+    document.addEventListener(
+      "mousedown",
+      handleClickOutside
+    );
+
+    return () => {
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
+    };
+  }, []);
+
   const [showNotifications, setShowNotifications] =
     useState(false);
+  const notificationRef = useRef<HTMLDivElement>(null);
 
   const notifications = [
     "New task assigned",
@@ -84,6 +111,8 @@ export function AppShell({
           <span>InternOps starter scaffold</span>
 
           <div className="topbar-actions">
+            <GlobalSearch placeholder="Search..." />
+
             <a
               href="http://localhost:8000/docs"
               target="_blank"
@@ -92,7 +121,10 @@ export function AppShell({
               API docs
             </a>
 
-            <div className="notification-wrapper">
+            <div
+              className="notification-wrapper"
+              ref={notificationRef}
+            >
               <button
                 className="notification-button"
                 type="button"
