@@ -42,6 +42,22 @@ export function TasksPage() {
     [statusFilter, searchTerm],
   );
 
+  const todoTasks = visibleTasks.filter(
+    (task) => task.status === "todo"
+  );
+
+  const progressTasks = visibleTasks.filter(
+    (task) => task.status === "in_progress"
+  );
+
+  const reviewTasks = visibleTasks.filter(
+    (task) => task.status === "review"
+  );
+
+  const doneTasks = visibleTasks.filter(
+    (task) => task.status === "done"
+  );
+
   return (
     <>
       <PageHeader
@@ -80,49 +96,52 @@ export function TasksPage() {
         {visibleTasks.length !== 1 ? "s" : ""}
       </p>
 
-      <section className="card-grid">
-        {visibleTasks.length === 0 && (
-          <article className="info-card">
-            <h3>No tasks found</h3>
-            <p>Try adjusting the filters or search query.</p>
-          </article>
-        )}
+      <section className="kanban-board">
 
-        {visibleTasks.map((task) => (
-          <article className="info-card" key={task.id}>
-            <div className="card-icon-line">
-              <ListChecks size={18} aria-hidden="true" />
-              <StatusBadge label={task.featureCode} tone="red" />
-            </div>
+        <div className="kanban-column">
+          <h3>Todo ({todoTasks.length})</h3>
 
-            <h3>{task.title}</h3>
+          {todoTasks.map((task) => (
+            <article className="info-card" key={task.id}>
+              <h4>{task.title}</h4>
+              <p>{task.ownerName}</p>
+            </article>
+          ))}
+        </div>
 
-            <p>{task.ownerName}</p>
+        <div className="kanban-column">
+          <h3>In Progress ({progressTasks.length})</h3>
 
-            <div className="meta-line">
-              <StatusBadge
-                label={task.status.replace("_", " ")}
-                tone={statusTone[task.status]}
-              />
+          {progressTasks.map((task) => (
+            <article className="info-card" key={task.id}>
+              <h4>{task.title}</h4>
+              <p>{task.ownerName}</p>
+            </article>
+          ))}
+        </div>
 
-              <StatusBadge
-                label={task.priority}
-                tone={
-                  task.priority === "high"
-                    ? "red"
-                    : task.priority === "medium"
-                    ? "amber"
-                    : "green"
-                }
-              />
+        <div className="kanban-column">
+          <h3>Review ({reviewTasks.length})</h3>
 
-              <StatusBadge
-                label={`Week ${task.dueWeek}`}
-                tone="blue"
-              />
-            </div>
-          </article>
-        ))}
+          {reviewTasks.map((task) => (
+            <article className="info-card" key={task.id}>
+              <h4>{task.title}</h4>
+              <p>{task.ownerName}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="kanban-column">
+          <h3>Done ({doneTasks.length})</h3>
+
+          {doneTasks.map((task) => (
+            <article className="info-card" key={task.id}>
+              <h4>{task.title}</h4>
+              <p>{task.ownerName}</p>
+            </article>
+          ))}
+        </div>
+
       </section>
     </>
   );
