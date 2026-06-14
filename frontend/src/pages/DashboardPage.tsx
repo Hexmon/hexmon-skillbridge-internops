@@ -17,6 +17,33 @@ export function DashboardPage() {
 
   const resourceProgress = 75;
   const qaProgress = 60;
+  const activities = [
+    {
+      type: "success",
+      text: "K. Rajesh completed Build resources page filters",
+      time: "10 min ago",
+    },
+    {
+      type: "warning",
+      text: "Biswajeet Kar updated architecture document",
+      time: "25 min ago",
+    },
+    {
+      type: "info",
+      text: "New React learning resource added",
+      time: "1 hour ago",
+    },
+    {
+      type: "danger",
+      text: "Backend API blocker reported",
+      time: "2 hours ago",
+    },
+    {
+      type: "success",
+      text: "QA checklist created",
+      time: "Today",
+    },
+  ];
 
   return (
     <>
@@ -51,6 +78,26 @@ export function DashboardPage() {
           value={totalResources}
           tone="red"
         />
+      </section>
+
+      <section className="info-card">
+        <h2>Recent Activity</h2>
+
+        <div className="activity-timeline">
+          {activities.map((activity, index) => (
+            <div
+              key={index}
+              className={`activity-item ${activity.type}`}
+            >
+              <div className="activity-dot" />
+
+              <div className="activity-content">
+                <p>{activity.text}</p>
+                <small>{activity.time}</small>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="info-card">
