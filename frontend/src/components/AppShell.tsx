@@ -12,6 +12,7 @@ type AppShellProps = {
   activePage: PageId;
   navItems: NavItem[];
   onNavigate: (page: PageId) => void;
+  onLogout?: () => void;
   children: React.ReactNode;
 };
 
@@ -19,6 +20,7 @@ export function AppShell({
   activePage,
   navItems,
   onNavigate,
+  onLogout,
   children,
 }: AppShellProps) {
   const [darkMode, setDarkMode] = useState(
@@ -166,6 +168,16 @@ export function AppShell({
                 <Moon size={18} />
               )}
             </button>
+
+            {onLogout && (
+              <button
+                className="secondary-action"
+                type="button"
+                onClick={onLogout}
+              >
+                Logout
+              </button>
+            )}
           </div>
         </header>
         <main className="page-content">{children}</main>

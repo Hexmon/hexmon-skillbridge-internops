@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { AppShell } from "./components/AppShell";
 import { AiCoachPage } from "./pages/AiCoachPage";
+import { LoginPage } from "./pages/LoginPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { DailyUpdatesPage } from "./pages/DailyUpdatesPage";
 import { DocsHubPage } from "./pages/DocsHubPage";
@@ -36,6 +37,12 @@ const navItems: NavItem[] = [
 
 export default function App() {
   const [activePage, setActivePage] = useState<NavItem["id"]>("home");
+  const [isLoggedIn, setIsLoggedIn] =
+    useState(
+      localStorage.getItem(
+        "isLoggedIn"
+      ) === "true"
+    );
 
   const page = useMemo(() => {
     switch (activePage) {
@@ -61,11 +68,26 @@ export default function App() {
     }
   }, [activePage]);
 
+  if (!isLoggedIn) {
+    return (
+      <LoginPage
+        onLogin={() => {
+          localStorage.setItem("isLoggedIn", "true");
+          setIsLoggedIn(true);
+        }}
+      />
+    );
+  }
+
   return (
     <AppShell
       activePage={activePage}
       navItems={navItems}
       onNavigate={setActivePage}
+      onLogout={() => {
+        localStorage.removeItem("isLoggedIn");
+        setIsLoggedIn(false);
+      }}
     >
       {page}
     </AppShell>
