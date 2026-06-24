@@ -113,7 +113,7 @@ export function AppShell({
           <span>InternOps starter scaffold</span>
 
           <div className="topbar-actions">
-            <GlobalSearch placeholder="Search..." />
+            <GlobalSearch />
 
             <a
               href="http://localhost:8000/docs"

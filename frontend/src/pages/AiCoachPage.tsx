@@ -68,6 +68,25 @@ export function AiCoachPage() {
         description="Rule-based fallback space for beginner answers, resource suggestions, and daily update summaries."
       />
 
+      <section className="ai-hero">
+        <div className="ai-hero-content">
+          <Bot size={40} />
+          <div>
+            <h2>Your Personal AI Learning Assistant</h2>
+            <p>
+              Ask coding, GitHub, React, FastAPI, project workflow,
+              and internship-related questions.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div className="ai-stats">
+        <div>📚 Resources: 20+</div>
+        <div>🎯 Guidance: Real-time</div>
+        <div>🚀 Role-Based Support</div>
+      </div>
+
       <section className="two-column">
         <form className="form-panel" onSubmit={handleSubmit}>
           <label htmlFor="question">Question</label>
@@ -80,14 +99,14 @@ export function AiCoachPage() {
             value={question}
           />
 
-          <div className="example-prompts">
+          <div className="prompt-grid">
             <button
               type="button"
               onClick={() =>
                 setQuestion("How should I start building the task board feature?")
               }
             >
-              Task Board
+              🚀 Build Task Board
             </button>
 
             <button
@@ -96,7 +115,7 @@ export function AiCoachPage() {
                 setQuestion("How do I connect React frontend with FastAPI backend?")
               }
             >
-              React + FastAPI
+              ⚛️ React + FastAPI
             </button>
 
             <button
@@ -105,7 +124,16 @@ export function AiCoachPage() {
                 setQuestion("How do I write a good pull request?")
               }
             >
-              Pull Request
+              📦 Create Pull Request
+            </button>
+
+            <button
+              type="button"
+              onClick={() =>
+                setQuestion("Why is my code not working?")
+              }
+            >
+              🐛 Debug My Code
             </button>
           </div>
 
@@ -171,7 +199,13 @@ export function AiCoachPage() {
             <Sparkles size={18} aria-hidden="true" />
             <StatusBadge label={response.mode} tone="green" />
           </div>
-          <h2>Coach Response</h2>
+          <div className="coach-header">
+            <Bot size={24} />
+            <div>
+              <h2>AI Coach Response</h2>
+              <span>Ready to assist</span>
+            </div>
+          </div>
           <p>{response.answer}</p>
           <h3>Next steps</h3>
           <ul className="clean-list">

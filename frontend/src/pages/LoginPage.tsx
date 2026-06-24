@@ -30,12 +30,34 @@ export function LoginPage({
 
   return (
     <div className="login-page">
-      <div className="login-card">
+
+      <div className="login-left">
+        <div className="logo-badge">
+           InternOps
+        </div>
 
         <h1>Hexmon SkillBridge</h1>
 
-        <p>
-          Welcome Back 
+        <p className="login-tagline">
+          InternOps Management Platform
+        </p>
+
+        <div className="feature-list">
+          <div>✓ Task Management</div>
+          <div>✓ QA Tracking</div>
+          <div>✓ Resource Library</div>
+          <div>✓ AI Coach Support</div>
+          <div>✓ Mentor Dashboard</div>
+        </div>
+      </div>
+
+      <div className="login-card">
+
+        <p className="login-subtitle">
+          Welcome Back 👋
+          <br />
+          Sign in to continue managing tasks,
+          resources, QA activities, and intern progress.
         </p>
 
         <form onSubmit={handleSubmit}>
@@ -110,10 +132,12 @@ export function LoginPage({
           </button>
         </form>
 
-        <small>
-          Demo Login:
-          admin@hexmon.com
-        </small>
+        <div className="demo-box">
+          <strong>Demo Credentials</strong>
+
+          <p>Email: admin@hexmon.com</p>
+          <p>Password: admin123</p>
+        </div>
 
       </div>
     </div>
