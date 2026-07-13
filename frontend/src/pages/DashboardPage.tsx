@@ -17,10 +17,30 @@ export function DashboardPage() {
       />
 
       <section className="stat-grid" aria-label="Intern dashboard metrics">
-        <StatTile icon={Clock} label="Open tasks" value={activeTasks.length} tone="blue" />
-        <StatTile icon={CheckCircle2} label="Done tasks" value="1" tone="green" />
-        <StatTile icon={MessageCircleWarning} label="Blockers logged" value={blockers.length} tone="amber" />
-        <StatTile icon={GitPullRequest} label="PR evidence needed" value="Every task" tone="red" />
+        <StatTile
+          icon={Clock}
+          label="Open tasks"
+          value={activeTasks.length}
+          tone="blue"
+        />
+        <StatTile
+          icon={CheckCircle2}
+          label="Done tasks"
+          value="1"
+          tone="green"
+        />
+        <StatTile
+          icon={MessageCircleWarning}
+          label="Blockers logged"
+          value={blockers.length}
+          tone="amber"
+        />
+        <StatTile
+          icon={GitPullRequest}
+          label="PR evidence needed"
+          value="Every task"
+          tone="red"
+        />
       </section>
 
       <section className="two-column">
@@ -47,12 +67,39 @@ export function DashboardPage() {
                 <StatusBadge label={update.date} tone="neutral" />
                 <h3>{update.internName}</h3>
                 <p>{update.done}</p>
-                <p><strong>Next:</strong> {update.nextAction}</p>
+                <p>
+                  <strong>Next:</strong> {update.nextAction}
+                </p>
               </article>
             ))}
           </div>
         </div>
       </section>
+
+      <div
+        style={{
+          textAlign: "center",
+          marginTop: "2rem",
+          marginBottom: "1rem",
+        }}
+      >
+        <span
+          onClick={() =>
+            window.open(
+              "https://mail.google.com/mail/?view=cm&fs=1&to=andoleaasritha@gmail.com",
+              "_blank"
+            )
+          }
+          style={{
+            color: "#2563eb",
+            textDecoration: "underline",
+            fontWeight: 500,
+            cursor: "pointer",
+          }}
+        >
+          Support & Help
+        </span>
+      </div>
     </>
   );
 }

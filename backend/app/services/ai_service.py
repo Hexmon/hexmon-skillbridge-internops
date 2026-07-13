@@ -334,12 +334,13 @@ def coach_response(payload: AICoachRequest) -> AICoachResponse:
     if specific_response:
         guide = specific_response
     else:
-        guide = get_guide_by_intent(intent)
-
+        guide = get_guide_by_intent(intent)   
+#till here we will get ans and steps ,then for res we have the neeche wala fun
     resources = get_resources_by_intent(
         intent,
         payload.question,
     )
+
 
     return AICoachResponse(
         answer=guide["answer"],
@@ -370,4 +371,4 @@ def summarize_updates(
         ),
         blockers=blockers,
         next_actions=next_actions,
-    )
+    ) 
