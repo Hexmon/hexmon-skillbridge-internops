@@ -8,6 +8,11 @@ export function DailyUpdatesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [confidence, setConfidence] = useState(4);
 
+  const [doneToday, setDoneToday] = useState("");
+  const [summary, setSummary] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [reviewed, setReviewed] = useState(false);
+
   const visibleUpdates = useMemo(
     () =>
       dailyUpdates.filter((update) =>
@@ -34,7 +39,38 @@ export function DailyUpdatesPage() {
           </select>
 
           <label htmlFor="done">Done today</label>
-          <textarea id="done" name="done" rows={4} placeholder="Completed..." />
+          <textarea
+            id="done"
+            name="done"
+            rows={4}
+            placeholder="Describe everything you completed today..."
+            value={doneToday}
+            onChange={(e) => {
+              const value = e.target.value;
+
+              setDoneToday(value);
+
+              setIsGenerating(true);
+
+              setSummary("");
+
+              clearTimeout((window as any).summaryTimer);
+
+              (window as any).summaryTimer = setTimeout(() => {
+
+                if (value.trim().length > 10) {
+
+                  setSummary(
+                    `Today I completed ${value.trim()}. I successfully progressed on my assigned internship tasks and will continue with the planned activities in the next session.`
+                  );
+
+                }
+
+                setIsGenerating(false);
+
+              }, 4000);
+            }}
+          />
 
           <label htmlFor="blockers">Blockers</label>
           <textarea id="blockers" name="blockers" rows={3} placeholder="None or describe the blocker" />
@@ -54,8 +90,45 @@ export function DailyUpdatesPage() {
 
           <p>Confidence Level: {confidence}/5</p>
 
-          <button className="primary-action" type="button">
-            <span>Submit update</span>
+          <div className="ai-summary-card">
+            <h3>🤖 AI Daily Summary</h3>
+
+            {isGenerating ? (
+              <div className="summary-loading">
+                ⏳ Generating summary...
+              </div>
+            ) : summary ? (
+              <>
+                <div className="summary-box">
+                  {summary}
+                </div>
+
+                <label className="review-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={reviewed}
+                    onChange={(e) => setReviewed(e.target.checked)}
+                  />
+                  I have reviewed this summary.
+                </label>
+
+                <button
+                  type="button"
+                  className="secondary-action"
+                  onClick={() => navigator.clipboard.writeText(summary)}
+                >
+                  📋 Copy Summary
+                </button>
+              </>
+            ) : (
+              <p className="summary-placeholder">
+                Start typing in <strong>Done Today</strong>. After a few seconds, an AI-generated summary will appear here automatically.
+              </p>
+            )}
+          </div>
+
+          <button className="primary-action" type="button" disabled={!reviewed}>
+            <span>Submit Update</span>
             <Send size={18} aria-hidden="true" />
           </button>
         </form>

@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import {
   Bot,
   BookOpen,
+  CalendarDays,
   ClipboardCheck,
   FileText,
   Home,
@@ -22,6 +23,7 @@ import { MentorDashboardPage } from "./pages/MentorDashboardPage";
 import { QaCenterPage } from "./pages/QaCenterPage";
 import { ResourcesPage } from "./pages/ResourcesPage";
 import { TasksPage } from "./pages/TasksPage";
+import { MeetingSchedulerPage } from "./pages/MeetingSchedulerPage";
 
 import type { NavItem } from "./types";
 
@@ -35,6 +37,7 @@ const navItems: NavItem[] = [
   { id: "qa", label: "QA Center", icon: ClipboardCheck },
   { id: "mentor", label: "Mentor Dashboard", icon: Users },
   { id: "docs", label: "Docs Hub", icon: FileText },
+  { id: "meetings", label: "Meeting Scheduler", icon: CalendarDays },
 ];
 
 export default function App() {
@@ -71,6 +74,9 @@ export default function App() {
 
       case "docs":
         return <DocsHubPage />;
+
+      case "meetings":
+        return <MeetingSchedulerPage />;
 
       case "home":
       default:
