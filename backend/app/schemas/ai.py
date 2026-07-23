@@ -13,10 +13,13 @@ class AICoachResponse(BaseModel):
     suggested_resources: list[str]
     mode: str = "rule-based-fallback"
 
+from datetime import date
 
 class UpdateSummaryRequest(BaseModel):
-    week: int
-    updates: list[str]
+    date: date
+    completed_work: str
+    blockers: str
+    next_actions: str
 
 
 class UpdateSummaryResponse(BaseModel):

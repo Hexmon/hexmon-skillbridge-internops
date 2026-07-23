@@ -348,27 +348,71 @@ def coach_response(payload: AICoachRequest) -> AICoachResponse:
         suggested_resources=resources[:3],
     )
 
+def parse_multiline(text: str) -> list[str]:
+    """
+    Converts multiline textarea input into a clean list.
+
+    Example:
+    Input:
+        "Implemented login\nFixed bugs\n\nUpdated docs"
+
+    Output:
+        ["Implemented login", "Fixed bugs", "Updated docs"]
+    """
+    if not text.strip():
+        return []
+
+    return [
+        line.strip()
+        for line in text.splitlines()
+        if line.strip()
+    ]
+
 def summarize_updates(
     payload: UpdateSummaryRequest,
 ) -> UpdateSummaryResponse:
 
-    blockers = [
-        update
-        for update in payload.updates
-        if "block" in update.lower()
+    completed = parse_multiline(payload.completed_work)
+    blockers = parse_multiline(payload.blockers)
+    next_actions = parse_multiline(payload.next_actions)
+
+    summary_lines = [
+        f"Daily Update Summary ({payload.date.strftime('%d %b %Y')})",
+        "",
+        "Completed Work:",
     ]
 
-    next_actions = [
-        update
-        for update in payload.updates
-        if "next" in update.lower()
-    ]
+    if completed:
+        summary_lines.extend(
+            [f"• {task}" for task in completed]
+        )
+    else:
+        summary_lines.append("• No completed work reported.")
+
+    summary_lines.append("")
+    summary_lines.append("Next Actions:")
+
+    if next_actions:
+        summary_lines.extend(
+            [f"• {task}" for task in next_actions]
+        )
+    else:
+        summary_lines.append("• No next actions reported.")
+
+    summary_lines.append("")
+    summary_lines.append("Blockers:")
+
+    if blockers:
+        summary_lines.extend(
+            [f"• {task}" for task in blockers]
+        )
+    else:
+        summary_lines.append("• No blockers reported.")
+
+    summary = "\n".join(summary_lines)
 
     return UpdateSummaryResponse(
-        summary=(
-            f"Week {payload.week}: "
-            f"{len(payload.updates)} updates were submitted for mentor review."
-        ),
+        summary=summary,
         blockers=blockers,
         next_actions=next_actions,
-    ) 
+    )
