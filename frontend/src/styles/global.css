@@ -1639,3 +1639,41 @@ body.dark-theme option {
 .heatmap-cell[data-visited="true"], .heatmap-legend i[data-visited="true"] { background: var(--color-red); }
 .heatmap-empty { aspect-ratio: 1; min-height: 12px; }
 .heatmap[data-range="4"] { justify-content: space-between; }
+
+/* Task assignment and mentor review workflow */
+.task-role-switch, .task-create-card, .task-workflow-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); }
+.task-role-switch { align-items: center; display: flex; gap: 20px; justify-content: space-between; margin-bottom: 18px; padding: 18px; }
+.task-role-switch p, .task-section-heading p { color: var(--color-muted); font-size: .88rem; margin-top: 3px; }
+.task-role-switch .segmented-control { margin: 0; }
+.task-notice { background: var(--color-green-soft); border: 1px solid rgba(22, 163, 74, .25); border-radius: var(--radius-control); color: var(--color-green); font-weight: 700; margin-bottom: 18px; padding: 11px 14px; }
+.task-create-card { margin-bottom: 22px; padding: 20px; }
+.task-section-heading { align-items: flex-start; display: flex; gap: 11px; margin-bottom: 18px; }
+.task-section-heading svg { color: var(--color-red); }
+.task-section-heading h2 { font-size: 1.1rem; margin: 0; }
+.task-form-grid { display: grid; gap: 14px; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 16px; }
+.task-form-grid label { display: grid; gap: 6px; }
+.task-form-grid label > span { font-size: .84rem; font-weight: 700; }
+.task-form-wide { grid-column: 1 / -1; }
+.task-form-grid textarea, .mentor-review-actions textarea { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-control); color: var(--color-text); font: inherit; padding: 10px 12px; resize: vertical; width: 100%; }
+.task-create-card .primary-action, .task-card-actions .primary-action, .task-card-actions .secondary-action { align-items: center; display: inline-flex; gap: 7px; justify-content: center; }
+.task-tools { align-items: center; display: flex; gap: 16px; justify-content: space-between; margin: 20px 0; }
+.task-tools .segmented-control { margin: 0; }
+.task-tools > input { max-width: 380px; }
+.task-workflow-list { display: grid; gap: 14px; }
+.task-workflow-card { align-items: center; display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr) minmax(220px, auto); padding: 18px; }
+.task-card-topline { align-items: center; color: var(--color-muted); display: flex; flex-wrap: wrap; font-size: .78rem; gap: 9px; }
+.task-card-main h3 { margin: 10px 0 4px; }
+.task-card-main > p { color: var(--color-muted); font-size: .9rem; }
+.task-owner { align-items: center; color: var(--color-muted); display: inline-flex; font-size: .82rem; gap: 6px; margin-top: 12px; }
+.task-submission, .task-correction { border-left: 3px solid var(--color-blue); margin-top: 14px; padding: 8px 12px; }
+.task-correction { background: var(--color-red-soft); border-left-color: var(--color-red); }
+.task-submission strong, .task-correction strong { font-size: .8rem; }
+.task-submission p, .task-correction p { font-size: .87rem; margin-top: 3px; }
+.task-card-actions { display: flex; justify-content: flex-end; }
+.mentor-review-actions { display: grid; gap: 10px; min-width: 340px; }
+.mentor-review-actions > div { display: flex; gap: 8px; justify-content: flex-end; }
+.task-return { color: var(--color-red); }
+.task-waiting { color: var(--color-amber); font-size: .84rem; font-weight: 700; }
+.task-approved { align-items: center; color: var(--color-green); display: inline-flex; font-size: .86rem; font-weight: 800; gap: 6px; }
+@media (max-width: 900px) { .task-form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }.task-workflow-card { grid-template-columns: 1fr; }.task-card-actions { justify-content: flex-start; }.mentor-review-actions { min-width: 0; width: 100%; } }
+@media (max-width: 680px) { .task-role-switch, .task-tools { align-items: stretch; flex-direction: column; }.task-form-grid { grid-template-columns: 1fr; }.task-form-wide { grid-column: auto; }.task-tools > input { max-width: none; }.mentor-review-actions > div { align-items: stretch; flex-direction: column; } }
