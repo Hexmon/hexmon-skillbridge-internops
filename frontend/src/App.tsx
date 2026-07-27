@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Bot,
   BookOpen,
@@ -24,6 +24,7 @@ import { QaCenterPage } from "./pages/QaCenterPage";
 import { ResourcesPage } from "./pages/ResourcesPage";
 import { TasksPage } from "./pages/TasksPage";
 import { MeetingSchedulerPage } from "./pages/MeetingSchedulerPage";
+import { ProfilePage } from "./pages/ProfilePage";
 
 import type { NavItem } from "./types";
 
@@ -48,6 +49,15 @@ export default function App() {
     useState(
       localStorage.getItem("isLoggedIn") === "true"
     );
+
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    const key = "skillbridge-profile-visits";
+    const visits = JSON.parse(localStorage.getItem(key) ?? "[]") as string[];
+    localStorage.setItem(key, JSON.stringify(Array.from(new Set([...visits, today]))));
+  }, [isLoggedIn]);
 
   const page = useMemo(() => {
     switch (activePage) {
@@ -77,6 +87,9 @@ export default function App() {
 
       case "meetings":
         return <MeetingSchedulerPage />;
+
+      case "profile":
+        return <ProfilePage />;
 
       case "home":
       default:
@@ -126,6 +139,7 @@ export default function App() {
 
         setIsLoggedIn(false);
       }}
+      onOpenProfile={() => setActivePage("profile")}
     >
       {page}
     </AppShell>

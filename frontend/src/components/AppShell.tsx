@@ -3,6 +3,7 @@ import {
   Moon,
   Sun,
   Bell,
+  LogOut,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { GlobalSearch } from "./GlobalSearch";
@@ -13,6 +14,7 @@ type AppShellProps = {
   navItems: NavItem[];
   onNavigate: (page: PageId) => void;
   onLogout?: () => void;
+  onOpenProfile?: () => void;
   children: React.ReactNode;
 };
 
@@ -21,6 +23,7 @@ export function AppShell({
   navItems,
   onNavigate,
   onLogout,
+  onOpenProfile,
   children,
 }: AppShellProps) {
   const [darkMode, setDarkMode] = useState(
@@ -105,6 +108,16 @@ export function AppShell({
               </button>
             );
           })}
+          {onLogout && (
+            <button
+              className="nav-button nav-button--logout"
+              type="button"
+              onClick={onLogout}
+            >
+              <LogOut size={18} aria-hidden="true" />
+              <span>Logout</span>
+            </button>
+          )}
         </nav>
       </aside>
 
@@ -169,13 +182,13 @@ export function AppShell({
               )}
             </button>
 
-            {onLogout && (
+            {onOpenProfile && (
               <button
                 className="secondary-action"
                 type="button"
-                onClick={onLogout}
+                onClick={onOpenProfile}
               >
-                Logout
+                My Profile
               </button>
             )}
           </div>

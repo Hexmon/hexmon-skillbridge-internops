@@ -9,7 +9,9 @@ export type PageId =
   | "ai"
   | "qa"
   | "mentor"
-  | "docs";
+  | "docs"
+  | "meetings"
+  | "profile";
 
 export type NavItem = {
   id: PageId;
