@@ -12,7 +12,7 @@ export function MeetingSchedulerPage() {
 
       <section className="meeting-dashboard-summary">
         <div className="summary-left">
-          <h3>📅 Meeting Dashboard</h3>
+          <h3> Meeting Dashboard</h3>
 
           <div className="summary-grid">
             <div>
