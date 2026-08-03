@@ -1,4 +1,10 @@
-import { CheckCircle2, Clock, GitPullRequest, MessageCircleWarning } from "lucide-react";
+import {
+  CheckCircle2,
+  Clock,
+  GitPullRequest,
+  MessageCircleWarning,
+  LifeBuoy,
+} from "lucide-react";
 import { PageHeader } from "../components/PageHeader";
 import { StatTile } from "../components/StatTile";
 import { StatusBadge } from "../components/StatusBadge";
@@ -10,11 +16,45 @@ export function DashboardPage() {
 
   return (
     <>
-      <PageHeader
-        eyebrow="Intern view"
-        title="Intern Dashboard"
-        description="Current starter data for roles, assigned work, latest updates, and PR-ready evidence."
-      />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          marginBottom: "1.5rem",
+        }}
+      >
+        <PageHeader
+          eyebrow="Intern view"
+          title="Intern Dashboard"
+          description="Current starter data for roles, assigned work, latest updates, and PR-ready evidence."
+        />
+
+        <button
+          onClick={() =>
+            window.open(
+              "https://mail.google.com/mail/?view=cm&fs=1&to=andoleaasritha@gmail.com",
+              "_blank"
+            )
+          }
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            background: "#2563eb",
+            color: "#fff",
+            border: "none",
+            borderRadius: "8px",
+            padding: "10px 16px",
+            cursor: "pointer",
+            fontWeight: 600,
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          }}
+        >
+          <LifeBuoy size={18} />
+          Support & Help
+        </button>
+      </div>
 
       <section className="stat-grid" aria-label="Intern dashboard metrics">
         <StatTile
@@ -75,31 +115,6 @@ export function DashboardPage() {
           </div>
         </div>
       </section>
-
-      <div
-        style={{
-          textAlign: "center",
-          marginTop: "2rem",
-          marginBottom: "1rem",
-        }}
-      >
-        <span
-          onClick={() =>
-            window.open(
-              "https://mail.google.com/mail/?view=cm&fs=1&to=andoleaasritha@gmail.com",
-              "_blank"
-            )
-          }
-          style={{
-            color: "#2563eb",
-            textDecoration: "underline",
-            fontWeight: 500,
-            cursor: "pointer",
-          }}
-        >
-          Support & Help
-        </span>
-      </div>
     </>
   );
 }
