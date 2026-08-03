@@ -1,4 +1,4 @@
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, CalendarCheck, CalendarX, CalendarMinus } from "lucide-react";
 import { PageHeader } from "../components/PageHeader";
 
 export function MeetingSchedulerPage() {
@@ -10,50 +10,67 @@ export function MeetingSchedulerPage() {
         description="Schedule, organize and track project meetings, sprint reviews and mentoring sessions."
       />
 
-      {/* Hero Section */}
-      <section className="meeting-hero">
-        <div className="meeting-hero-content">
-          <CalendarDays size={42} />
+      <section className="meeting-dashboard-summary">
+        <div className="summary-left">
+          <h3>📅 Meeting Dashboard</h3>
 
-          <div>
-            <h2>Organize Meetings Efficiently</h2>
+          <div className="summary-grid">
+            <div>
+              <span className="label">Today's Meetings</span>
+              <strong>2</strong>
+            </div>
 
-            <p>
-              Schedule meetings, invite participants, monitor upcoming sessions,
-              view meeting history and keep your internship team aligned.
-            </p>
+            <div>
+              <span className="label">Next Meeting</span>
+              <strong>Sprint Review • 3:00 PM</strong>
+            </div>
+
+            <div>
+              <span className="label">This Week</span>
+              <strong>5 Meetings</strong>
+            </div>
           </div>
         </div>
 
-        <button className="primary-action">
-          + Schedule Meeting
-        </button>
+        <button className="schedule-btn">+ Schedule Meeting</button>
       </section>
 
       {/* Statistics Cards */}
      <section className="meeting-stats">
   <div className="meeting-card total">
-    <span className="icon">📅</span>
+    <div className="meeting-card-header">
+      <CalendarDays size={22} />
+      <span className="meeting-title">Total Meetings</span>
+    </div>
     <h2>24</h2>
-    <p>Total Meetings</p>
+    <small>Overall Scheduled</small>
   </div>
 
   <div className="meeting-card attended">
-    <span className="icon">✅</span>
+    <div className="meeting-card-header">
+      <CalendarCheck size={22} />
+      <span className="meeting-title">Attended</span>
+    </div>
     <h2>18</h2>
-    <p>Attended</p>
+    <small>Successfully Joined</small>
   </div>
 
   <div className="meeting-card cancelled">
-    <span className="icon">❌</span>
+    <div className="meeting-card-header">
+      <CalendarX size={22} />
+      <span className="meeting-title">Cancelled</span>
+    </div>
     <h2>2</h2>
-    <p>Cancelled</p>
+    <small>Meetings Cancelled</small>
   </div>
 
   <div className="meeting-card missed">
-    <span className="icon">🚫</span>
+    <div className="meeting-card-header">
+      <CalendarMinus size={22} />
+      <span className="meeting-title">Not Attended</span>
+    </div>
     <h2>4</h2>
-    <p>Not Attended</p>
+    <small>Missed Sessions</small>
   </div>
 </section>
 
