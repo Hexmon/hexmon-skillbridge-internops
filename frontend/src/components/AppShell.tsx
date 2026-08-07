@@ -1,5 +1,4 @@
 import {
-  GraduationCap,
   Moon,
   Sun,
   Bell,
@@ -7,6 +6,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { GlobalSearch } from "./GlobalSearch";
+import logo from "../assets/hexmon-logo.jpeg";
 import type { NavItem, PageId } from "../types";
 
 type AppShellProps = {
@@ -81,13 +81,18 @@ export function AppShell({
     <div className="app-shell">
       <aside className="sidebar" aria-label="Primary navigation">
         <div className="brand">
-          <span className="brand__mark" aria-hidden="true">
-            <GraduationCap size={22} />
-          </span>
+
+          <img
+            src={logo}
+            alt="Hexmon Logo"
+            className="brand__logo"
+          />
+
           <div>
             <strong>Hexmon</strong>
             <span>SkillBridge</span>
           </div>
+
         </div>
 
         <nav className="nav-list">

@@ -66,6 +66,14 @@ a:hover {
   width: 42px;
 }
 
+.brand__logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
 .brand strong,
 .brand span {
   display: block;
