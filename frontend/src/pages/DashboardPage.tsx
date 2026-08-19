@@ -1,4 +1,10 @@
-import { CheckCircle2, Clock, GitPullRequest, MessageCircleWarning } from "lucide-react";
+import {
+  CheckCircle2,
+  Clock,
+  GitPullRequest,
+  MessageCircleWarning,
+  LifeBuoy,
+} from "lucide-react";
 import { PageHeader } from "../components/PageHeader";
 import { StatTile } from "../components/StatTile";
 import { StatusBadge } from "../components/StatusBadge";
@@ -11,12 +17,14 @@ export function DashboardPage() {
     (task) => task.status === "done",
   );
   const totalResources = resources.length;
+
   const taskProgress = Math.round(
     (completedTasks.length / tasks.length) * 100
   );
 
   const resourceProgress = 75;
   const qaProgress = 60;
+
   const activities = [
     {
       type: "success",
@@ -47,11 +55,45 @@ export function DashboardPage() {
 
   return (
     <>
-      <PageHeader
-        eyebrow="Intern view"
-        title="Intern Dashboard"
-        description="Current starter data for roles, assigned work, latest updates, and PR-ready evidence."
-      />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          marginBottom: "1.5rem",
+        }}
+      >
+        <PageHeader
+          eyebrow="Intern view"
+          title="Intern Dashboard"
+          description="Current starter data for roles, assigned work, latest updates, and PR-ready evidence."
+        />
+
+        <button
+          onClick={() =>
+            window.open(
+              "https://mail.google.com/mail/?view=cm&fs=1&to=andoleaasritha@gmail.com",
+              "_blank"
+            )
+          }
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            background: "#2563eb",
+            color: "#fff",
+            border: "none",
+            borderRadius: "8px",
+            padding: "10px 16px",
+            cursor: "pointer",
+            fontWeight: 600,
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          }}
+        >
+          <LifeBuoy size={18} />
+          Support & Help
+        </button>
+      </div>
 
       <section className="stat-grid" aria-label="Intern dashboard metrics">
         <StatTile
@@ -60,18 +102,21 @@ export function DashboardPage() {
           value={activeTasks.length}
           tone="blue"
         />
+
         <StatTile
           icon={CheckCircle2}
           label="Completed Tasks"
           value={completedTasks.length}
           tone="green"
         />
+
         <StatTile
           icon={MessageCircleWarning}
           label="Blockers"
           value={blockers.length}
           tone="amber"
         />
+
         <StatTile
           icon={GitPullRequest}
           label="Learning Resources"
@@ -143,11 +188,13 @@ export function DashboardPage() {
       <section className="two-column">
         <div>
           <h2>Role Focus</h2>
+
           <div className="stack">
             {interns.slice(0, 4).map((intern) => (
               <article className="row-card" key={intern.id}>
                 <div>
                   <h3>{intern.name}</h3>
+
                   <>
                     <p>{intern.primaryRole}</p>
                     <p>
@@ -155,7 +202,11 @@ export function DashboardPage() {
                     </p>
                   </>
                 </div>
-                <StatusBadge label={intern.currentFocus} tone="blue" />
+
+                <StatusBadge
+                  label={intern.currentFocus}
+                  tone="blue"
+                />
               </article>
             ))}
           </div>
@@ -163,21 +214,29 @@ export function DashboardPage() {
 
         <div>
           <h2>Latest Updates</h2>
+
           <div className="stack">
             {dailyUpdates.map((update) => (
               <article className="info-card" key={update.id}>
-                <StatusBadge label={update.date} tone="neutral" />
+                <StatusBadge
+                  label={update.date}
+                  tone="neutral"
+                />
+
                 <h3>{update.internName}</h3>
-                <>
-                  <p>{update.done}</p>
-                  {update.blockers !== "None" && (
-                    <StatusBadge
-                      label={`Blocker: ${update.blockers}`}
-                      tone="amber"
-                    />
-                  )}
-                </>
-                <p><strong>Next:</strong> {update.nextAction}</p>
+
+                <p>{update.done}</p>
+
+                {update.blockers !== "None" && (
+                  <StatusBadge
+                    label={`Blocker: ${update.blockers}`}
+                    tone="amber"
+                  />
+                )}
+
+                <p>
+                  <strong>Next:</strong> {update.nextAction}
+                </p>
               </article>
             ))}
           </div>
