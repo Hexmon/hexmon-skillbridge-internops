@@ -1,4 +1,4 @@
-import { Send } from "lucide-react";
+import { Send, Sparkles } from "lucide-react";
 import { useMemo, useState } from "react";
 import { PageHeader } from "../components/PageHeader";
 import { StatusBadge } from "../components/StatusBadge";
@@ -9,9 +9,13 @@ export function DailyUpdatesPage() {
   const [confidence, setConfidence] = useState(4);
 
   const [doneToday, setDoneToday] = useState("");
+  const [blockers, setBlockers] = useState("");
+  const [nextAction, setNextAction] = useState("");
+
   const [summary, setSummary] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [reviewed, setReviewed] = useState(false);
+  const [error, setError] = useState("");
 
   const visibleUpdates = useMemo(
     () =>
@@ -20,6 +24,53 @@ export function DailyUpdatesPage() {
       ),
     [searchTerm],
   );
+
+  const generateSummary = async () => {
+    if (!doneToday.trim() && !blockers.trim() && !nextAction.trim()) {
+      setError("Please enter your daily update before generating a summary.");
+      return;
+    }
+
+    setIsGenerating(true);
+    setSummary("");
+    setError("");
+    setReviewed(false);
+
+    try {
+      const today = new Date().toISOString().split("T")[0];
+
+      const response = await fetch(
+        "http://localhost:8000/api/ai/summarize-updates",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            date: today,
+            completed_work: doneToday,
+            blockers: blockers,
+            next_actions: nextAction,
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      setSummary(data.summary);
+    } catch (error) {
+      console.error("Failed to generate summary:", error);
+      setError(
+        "Unable to generate the summary. Please make sure the backend is running.",
+      );
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
   return (
     <>
@@ -32,6 +83,7 @@ export function DailyUpdatesPage() {
       <section className="two-column">
         <form className="form-panel">
           <label htmlFor="intern">Intern</label>
+
           <select id="intern" name="intern">
             {interns.map((intern) => (
               <option key={intern.id}>{intern.name}</option>
@@ -39,46 +91,40 @@ export function DailyUpdatesPage() {
           </select>
 
           <label htmlFor="done">Done today</label>
+
           <textarea
             id="done"
             name="done"
             rows={4}
             placeholder="Describe everything you completed today..."
             value={doneToday}
-            onChange={(e) => {
-              const value = e.target.value;
-
-              setDoneToday(value);
-
-              setIsGenerating(true);
-
-              setSummary("");
-
-              clearTimeout((window as any).summaryTimer);
-
-              (window as any).summaryTimer = setTimeout(() => {
-
-                if (value.trim().length > 10) {
-
-                  setSummary(
-                    `Today I completed ${value.trim()}. I successfully progressed on my assigned internship tasks and will continue with the planned activities in the next session.`
-                  );
-
-                }
-
-                setIsGenerating(false);
-
-              }, 4000);
-            }}
+            onChange={(e) => setDoneToday(e.target.value)}
           />
 
           <label htmlFor="blockers">Blockers</label>
-          <textarea id="blockers" name="blockers" rows={3} placeholder="None or describe the blocker" />
+
+          <textarea
+            id="blockers"
+            name="blockers"
+            rows={3}
+            placeholder="None or describe the blocker"
+            value={blockers}
+            onChange={(e) => setBlockers(e.target.value)}
+          />
 
           <label htmlFor="next-action">Next action</label>
-          <textarea id="next-action" name="next-action" rows={3} placeholder="Next step..." />
+
+          <textarea
+            id="next-action"
+            name="next-action"
+            rows={3}
+            placeholder="Next step..."
+            value={nextAction}
+            onChange={(e) => setNextAction(e.target.value)}
+          />
 
           <label htmlFor="confidence">Confidence score</label>
+
           <input
             id="confidence"
             type="range"
@@ -90,8 +136,21 @@ export function DailyUpdatesPage() {
 
           <p>Confidence Level: {confidence}/5</p>
 
+          <button
+            type="button"
+            className="primary-action"
+            onClick={generateSummary}
+            disabled={isGenerating}
+          >
+            <Sparkles size={18} aria-hidden="true" />
+
+            <span>
+              {isGenerating ? "Generating Summary..." : "Generate Summary"}
+            </span>
+          </button>
+
           <div className="ai-summary-card">
-            <h3>🤖 AI Daily Summary</h3>
+            <h3>🤖 Daily Summary</h3>
 
             {isGenerating ? (
               <div className="summary-loading">
@@ -109,6 +168,7 @@ export function DailyUpdatesPage() {
                     checked={reviewed}
                     onChange={(e) => setReviewed(e.target.checked)}
                   />
+
                   I have reviewed this summary.
                 </label>
 
@@ -122,12 +182,28 @@ export function DailyUpdatesPage() {
               </>
             ) : (
               <p className="summary-placeholder">
-                Start typing in <strong>Done Today</strong>. After a few seconds, an AI-generated summary will appear here automatically.
+                Fill in your completed work, blockers, and next actions, then
+                click <strong>Generate Summary</strong>.
+              </p>
+            )}
+
+            {error && (
+              <p
+                style={{
+                  marginTop: "12px",
+                  color: "#dc2626",
+                }}
+              >
+                {error}
               </p>
             )}
           </div>
 
-          <button className="primary-action" type="button" disabled={!reviewed}>
+          <button
+            className="primary-action"
+            type="button"
+            disabled={!reviewed}
+          >
             <span>Submit Update</span>
             <Send size={18} aria-hidden="true" />
           </button>
@@ -145,20 +221,26 @@ export function DailyUpdatesPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
 
-          <p>
-            Showing {visibleUpdates.length} updates
-          </p>
+          <p>Showing {visibleUpdates.length} updates</p>
 
           <div className="stack">
             {visibleUpdates.map((update) => (
               <article className="info-card" key={update.id}>
-                <StatusBadge label={`${update.date} - ${update.internName}`} tone="blue" />
+                <StatusBadge
+                  label={`${update.date} - ${update.internName}`}
+                  tone="blue"
+                />
+
                 <p>{update.done}</p>
+
                 <StatusBadge
                   label={`Blocker: ${update.blockers}`}
                   tone="amber"
                 />
-                <p><strong>Next:</strong> {update.nextAction}</p>
+
+                <p>
+                  <strong>Next:</strong> {update.nextAction}
+                </p>
               </article>
             ))}
           </div>
